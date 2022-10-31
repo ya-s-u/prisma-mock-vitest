@@ -1,26 +1,24 @@
-// @ts-nocheck
+import type { PrismaClient } from '@prisma/client';
+import { suite, test, expect } from 'vitest';
+import { createPrismaClient } from '../src';
 
-import createPrismaClient from "../src/";
-import { PrismaClient } from "@prisma/client";
-
-
-describe("PrismaClient include", () => {
-  const data = {
+suite('Queries with Include', () => {
+  const baseData = {
     user: [
       {
         id: 1,
-        name: "sadfsdf",
+        name: 'sadfsdf',
         accountId: 1,
       },
     ],
     account: [
       {
         id: 1,
-        name: "sadfsdf",
+        name: 'sadfsdf',
       },
       {
         id: 2,
-        name: "adsfasdf2",
+        name: 'adsfasdf2',
       },
     ],
     stripe: [
@@ -31,8 +29,9 @@ describe("PrismaClient include", () => {
     ],
   };
 
-  test("findOne to", async () => {
-    const client = await createPrismaClient(data);
+  test('findOne to', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const user = await client.user.findUnique({
       where: {
         id: 1,
@@ -41,14 +40,16 @@ describe("PrismaClient include", () => {
         account: true,
       },
     });
+
     expect(user).toEqual({
-      ...data.user[0],
-      account: data.account[0],
+      ...baseData.user[0],
+      account: baseData.account[0],
     });
   });
 
-  test("findOne from", async () => {
-    const client = await createPrismaClient(data);
+  test('findOne from', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const stripe = await client.stripe.findUnique({
       where: {
         id: 1,
@@ -57,14 +58,16 @@ describe("PrismaClient include", () => {
         account: true,
       },
     });
+
     expect(stripe).toEqual({
-      ...data.stripe[0],
-      account: data.account[0],
+      ...baseData.stripe[0],
+      account: baseData.account[0],
     });
   });
 
-  test("findOne deep", async () => {
-    const client = await createPrismaClient(data);
+  test('findOne deep', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const user = await client.user.findUnique({
       where: {
         id: 1,
@@ -77,17 +80,19 @@ describe("PrismaClient include", () => {
         },
       },
     });
+
     expect(user).toEqual({
-      ...data.user[0],
+      ...baseData.user[0],
       account: {
-        ...data.account[0],
-        stripe: data.stripe[0],
+        ...baseData.account[0],
+        stripe: baseData.stripe[0],
       },
     });
   });
 
-  test("findMany deep", async () => {
-    const client = await createPrismaClient(data);
+  test('findMany deep', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const users = await client.user.findMany({
       where: {
         id: 1,
@@ -100,30 +105,31 @@ describe("PrismaClient include", () => {
         },
       },
     });
+
     expect(users[0]).toEqual({
-      ...data.user[0],
+      ...baseData.user[0],
       account: {
-        ...data.account[0],
-        stripe: data.stripe[0],
+        ...baseData.account[0],
+        stripe: baseData.stripe[0],
       },
     });
   });
 
-  test("findMany one to many", async () => {
-    const client = await createPrismaClient(data);
+  test('findMany one to many', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const users = await client.account.findMany({
       where: {
         id: 1,
       },
       include: {
-        users: true
+        users: true,
       },
     });
+
     expect(users[0]).toEqual({
-      ...data.account[0],
-      users: [
-        data.user[0],
-      ],
+      ...baseData.account[0],
+      users: [baseData.user[0]],
     });
   });
 });
