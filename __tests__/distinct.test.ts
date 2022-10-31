@@ -31,12 +31,12 @@ suite('Queries with Distinct', () => {
       distinct: ['id'],
     });
 
-    expect(users.length).toBe(4);
+    expect(users.length).toEqual(4);
 
     users = await client.user.findMany({
       distinct: ['name'],
     });
 
-    expect(users.length).toBe(2);
+    expect(users.length).toEqual(2);
   });
 });

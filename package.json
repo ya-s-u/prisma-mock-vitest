@@ -1,27 +1,47 @@
 {
-  "name": "prisma-mock",
+  "name": "prisma-mock-vitest",
   "version": "0.1.0",
-  "description": "Mock prisma for unit testing database",
-  "main": "lib/index.js",
-  "repository": "https://github.com/demonsters/prisma-mock",
+  "description": "Mock prisma client for unit testing with vitest",
+  "repository": "https://github.com/james-elicx/prisma-mock",
+  "author": "James",
   "license": "MIT",
-  "types": "lib/",
   "files": [
-    "lib/"
+    "dist/"
   ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/james-elicx/prisma-mock/issues"
+  },
+  "homepage": "https://github.com/james-elicx/prisma-mock#readme",
   "scripts": {
-    "preversion": "tsc",
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "rimraf dist && yarn lint && yarn test && vite build",
+    "build:skip": "rimraf dist && vite build",
+    "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest --passWithNoTests"
+    "test:watch": "vitest --passWithNoTests",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint \"./**/*.{cjs,js,ts}\"",
+    "tsc": "tsc --noEmit",
+    "tsc:watch": "tsc --watch",
+    "clean": "rimraf node_modules && rimraf dist",
+    "postinstall": "husky install && npx prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "3.10.0",
-    "@prisma/generator-helper": "^3.10.0",
-    "@prisma/sdk": "^3.10.0"
+    "@prisma/client": "^4.5.0",
+    "@prisma/generator-helper": "^4.5.0",
+    "@prisma/sdk": "^4.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
     "@tsconfig/strictest": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
@@ -32,14 +52,24 @@
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1",
-    "prisma": "3.5.0",
-    "typescript": "^4.4.4",
+    "prisma": "^4.5.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
     "vite": "^3.2.2",
+    "vite-plugin-checker": "^0.5.1",
+    "vite-plugin-dts": "^1.6.6",
     "vitest": "^0.24.4",
     "vitest-mock-extended": "1.0.3"
   },
   "peerDependencies": {
-    "@prisma/client": "^3.5.0"
-  }
+    "@prisma/client": "^4.5.0"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "yarn": ">=3.0.0",
+    "node": ">=16.0.0"
+  },
+  "packageManager": "yarn@3.2.1"
 }

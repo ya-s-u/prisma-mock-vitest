@@ -21,7 +21,7 @@ suite('Nested One-To-Many', () => {
       });
 
       const users = await client.user.findMany();
-      expect(users.length).toBe(1);
+      expect(users.length).toEqual(1);
 
       expect(account).toEqual({
         id: 1,

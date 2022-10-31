@@ -1,5 +1,20 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
-lib/
-node_modules/
-dist/
-TODO.md
+# testing
+coverage
+
+# build files
+dist
+
+# temp files
+tsconfig.tsbuildinfo
