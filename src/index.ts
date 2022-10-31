@@ -22,7 +22,7 @@ export type PrismaMockData<P extends { [key: string]: any }> = Partial<{
   [key in IsTable<Uncapitalize<IsString<keyof P>>>]: PrismaList<P, key>;
 }>;
 
-const createPrismaMock = <P extends PrismaClient>(
+const createPrismaMock = <P extends PrismaClient = PrismaClient>(
   data: PrismaMockData<P> = {},
   datamodel?: Prisma.DMMF.Datamodel,
   client = mockDeep<P>(),

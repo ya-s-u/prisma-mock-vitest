@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -11,7 +10,7 @@ suite('Update Queries', () => {
   };
 
   test('increment', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -25,7 +24,7 @@ suite('Update Queries', () => {
   });
 
   test('increment negative', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -39,7 +38,7 @@ suite('Update Queries', () => {
   });
 
   test('increment where', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -56,7 +55,7 @@ suite('Update Queries', () => {
   });
 
   test('decrement', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -70,7 +69,7 @@ suite('Update Queries', () => {
   });
 
   test('multiply', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -84,7 +83,7 @@ suite('Update Queries', () => {
   });
 
   test('divide', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -98,7 +97,7 @@ suite('Update Queries', () => {
   });
 
   test('set', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     await client.user.updateMany({
       data: {
         clicks: {

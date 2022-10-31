@@ -1,11 +1,10 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
 suite('Nested One-To-One', () => {
   suite('Create', () => {
     test('create', async () => {
-      const client = await createPrismaClient<PrismaClient>({});
+      const client = await createPrismaClient({});
 
       const user = await client.user.create({
         data: {
@@ -37,7 +36,7 @@ suite('Nested One-To-One', () => {
 
   suite('Update', () => {
     test('update', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1, name: 'A' }],
         stripe: [
           {
@@ -76,7 +75,7 @@ suite('Nested One-To-One', () => {
 
   suite('Disconnect', () => {
     test('disconnect', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1, name: 'A' }],
         stripe: [
           {
@@ -104,7 +103,7 @@ suite('Nested One-To-One', () => {
     });
 
     test('disconnect other direction', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1, name: 'A' }],
         stripe: [
           {
@@ -134,7 +133,7 @@ suite('Nested One-To-One', () => {
 
   suite('Delete', () => {
     test('Delete', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1, name: 'A' }],
         stripe: [
           {
@@ -167,7 +166,7 @@ suite('Nested One-To-One', () => {
 
   suite('Select', () => {
     test('select', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [
           { id: 1, name: 'A' },
           { id: 2, name: 'B' },

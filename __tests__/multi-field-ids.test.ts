@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -33,7 +32,7 @@ suite('@@id()', () => {
   };
 
   test('findOne', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.userAnswers.findUnique({
       where: {
@@ -48,7 +47,7 @@ suite('@@id()', () => {
   });
 
   test('findOne NOT found', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.userAnswers.findUnique({
       where: {
@@ -63,7 +62,7 @@ suite('@@id()', () => {
   });
 
   test('create', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.userAnswers.create({
       data: {
@@ -93,7 +92,7 @@ suite('@@id()', () => {
   test.todo('update');
 
   test('upsert insert', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const newItem1 = await client.userAnswers.upsert({
       create: {
@@ -168,7 +167,7 @@ suite('@@id()', () => {
   test('upsert update', async () => {});
 
   test('updateMany', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.userAnswers.create({
       data: {

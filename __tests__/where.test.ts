@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { Role } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
@@ -45,7 +44,7 @@ suite('Queries with Where', () => {
     };
 
     test('multiple', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -58,7 +57,7 @@ suite('Queries with Where', () => {
     });
 
     test('startsWith', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -70,7 +69,7 @@ suite('Queries with Where', () => {
     });
 
     test('endsWith', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -82,7 +81,7 @@ suite('Queries with Where', () => {
     });
 
     test('contains', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -94,7 +93,7 @@ suite('Queries with Where', () => {
     });
 
     test('equals', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -106,7 +105,7 @@ suite('Queries with Where', () => {
     });
 
     test('gt', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -118,7 +117,7 @@ suite('Queries with Where', () => {
     });
 
     test('gte', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -130,7 +129,7 @@ suite('Queries with Where', () => {
     });
 
     test('lt', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -142,7 +141,7 @@ suite('Queries with Where', () => {
     });
 
     test('lte', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -154,7 +153,7 @@ suite('Queries with Where', () => {
     });
 
     test('not', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -166,7 +165,7 @@ suite('Queries with Where', () => {
     });
 
     test('notIn', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -178,7 +177,7 @@ suite('Queries with Where', () => {
     });
 
     test('in', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.account.findMany({
         where: {
@@ -190,7 +189,7 @@ suite('Queries with Where', () => {
     });
 
     test('Deep', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const account = await client.user.findMany({
         where: {
@@ -204,7 +203,7 @@ suite('Queries with Where', () => {
     });
 
     test('date', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -216,7 +215,7 @@ suite('Queries with Where', () => {
     });
 
     test('OR', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -229,7 +228,7 @@ suite('Queries with Where', () => {
     });
 
     test('NOT', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -242,7 +241,7 @@ suite('Queries with Where', () => {
     });
 
     test('AND', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -271,7 +270,7 @@ suite('Queries with Where', () => {
     };
 
     test('every', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -288,7 +287,7 @@ suite('Queries with Where', () => {
     });
 
     test('some', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -305,7 +304,7 @@ suite('Queries with Where', () => {
     });
 
     test('none', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const accounts = await client.account.findMany({
         where: {
@@ -337,7 +336,7 @@ suite('Queries with Where', () => {
     };
 
     test('null', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const users = await client.user.findMany({
         where: {
@@ -349,7 +348,7 @@ suite('Queries with Where', () => {
     });
 
     test('undefined', async () => {
-      const client = await createPrismaClient<PrismaClient>(baseData);
+      const client = await createPrismaClient(baseData);
 
       const users = await client.user.findMany({
         where: {

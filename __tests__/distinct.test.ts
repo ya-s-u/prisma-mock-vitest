@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -25,7 +24,7 @@ suite('Queries with Distinct', () => {
   };
 
   test('distinct', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     let users = await client.user.findMany({
       distinct: ['id'],

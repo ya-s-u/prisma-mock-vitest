@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { Role } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
@@ -28,7 +27,7 @@ suite('PrismaClient', () => {
   };
 
   test('findOne', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.user.findUnique({
       where: {
@@ -40,7 +39,7 @@ suite('PrismaClient', () => {
   });
 
   test('findOne by id', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     const user = await client.account.findUnique({
       where: {
         id: 2,
@@ -50,25 +49,25 @@ suite('PrismaClient', () => {
   });
 
   test('findMany', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     const accounts = await client.account.findMany();
     expect(accounts).toEqual(baseData.account);
   });
 
   test('findFirst', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     const accounts = await client.account.findFirst();
     expect(accounts).toEqual(baseData.account[0]);
   });
 
   test('count', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
     const accounts = await client.account.count();
     expect(accounts).toEqual(2);
   });
 
   test('create', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.user.create({
       data: {
@@ -92,7 +91,7 @@ suite('PrismaClient', () => {
   });
 
   test('create connect', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.user.create({
       data: {
@@ -117,7 +116,7 @@ suite('PrismaClient', () => {
   });
 
   test('delete', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.account.delete({
       where: {
@@ -131,7 +130,7 @@ suite('PrismaClient', () => {
   });
 
   test('update', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.account.update({
       where: {
@@ -155,7 +154,7 @@ suite('PrismaClient', () => {
   });
 
   test('upsert update', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     // @ts-expect-error - We only want to test the update function of upsert.
     await client.account.upsert({
@@ -180,7 +179,7 @@ suite('PrismaClient', () => {
   });
 
   test('upsert create', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     await client.account.upsert({
       where: {
@@ -206,7 +205,7 @@ suite('PrismaClient', () => {
   });
 
   test('connect implicit', async () => {
-    const client = await createPrismaClient<PrismaClient>({});
+    const client = await createPrismaClient({});
 
     const account = await client.account.create({
       data: {
@@ -237,7 +236,7 @@ suite('PrismaClient', () => {
   });
 
   test('autoincoment', async () => {
-    const client = await createPrismaClient<PrismaClient>({});
+    const client = await createPrismaClient({});
 
     const user = await client.user.create({
       data: {
@@ -263,7 +262,7 @@ suite('PrismaClient', () => {
   });
 
   test('autoincoment: alternative id name', async () => {
-    const client = await createPrismaClient<PrismaClient>({ user: baseData.user });
+    const client = await createPrismaClient({ user: baseData.user });
 
     const element = await client.element.create({
       data: {
@@ -292,7 +291,7 @@ suite('PrismaClient', () => {
 
   suite('Connect or Create', () => {
     test('Connect to already existing user', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         user: [
           {
             id: 1,
@@ -343,7 +342,7 @@ suite('PrismaClient', () => {
     });
 
     test('Create a new user when no user exists', async () => {
-      const client = await createPrismaClient<PrismaClient>();
+      const client = await createPrismaClient();
 
       const element = await client.element.create({
         data: {
@@ -384,7 +383,7 @@ suite('PrismaClient', () => {
     });
 
     test('Create a new user when no user exists and connect multiple times', async () => {
-      const client = await createPrismaClient<PrismaClient>();
+      const client = await createPrismaClient();
 
       const element = await client.element.create({
         data: {

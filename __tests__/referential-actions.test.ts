@@ -1,11 +1,10 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
 suite('Referential Actions', () => {
   suite('onDelete', () => {
     test('SetNull', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         user: [{ id: 1, name: 'sadfsdf', accountId: 1 }],
         account: [{ id: 1, name: 'A' }],
       });
@@ -22,7 +21,7 @@ suite('Referential Actions', () => {
     });
 
     test('Cascade', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         stripe: [{ id: 1, accountId: 1 }],
         account: [{ id: 1, name: 'A' }],
       });

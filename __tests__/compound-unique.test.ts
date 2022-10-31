@@ -1,10 +1,9 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
 suite('@@unique()', () => {
   test('upsert insert', async () => {
-    const client = await createPrismaClient<PrismaClient>({
+    const client = await createPrismaClient({
       user: [
         {
           id: 1,

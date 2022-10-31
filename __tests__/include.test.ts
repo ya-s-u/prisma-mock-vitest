@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -30,7 +29,7 @@ suite('Queries with Include', () => {
   };
 
   test('findOne to', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.user.findUnique({
       where: {
@@ -48,7 +47,7 @@ suite('Queries with Include', () => {
   });
 
   test('findOne from', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const stripe = await client.stripe.findUnique({
       where: {
@@ -66,7 +65,7 @@ suite('Queries with Include', () => {
   });
 
   test('findOne deep', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.user.findUnique({
       where: {
@@ -91,7 +90,7 @@ suite('Queries with Include', () => {
   });
 
   test('findMany deep', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const users = await client.user.findMany({
       where: {
@@ -116,7 +115,7 @@ suite('Queries with Include', () => {
   });
 
   test('findMany one to many', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const users = await client.account.findMany({
       where: {

@@ -1,4 +1,3 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -30,7 +29,7 @@ suite('Select Queries', () => {
   };
 
   test('findOne to', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const user = await client.user.findUnique({
       where: {
@@ -49,7 +48,7 @@ suite('Select Queries', () => {
   });
 
   test('orderBy', async () => {
-    const client = await createPrismaClient<PrismaClient>(baseData);
+    const client = await createPrismaClient(baseData);
 
     const accounts = await client.account.findMany({
       orderBy: {
@@ -70,7 +69,7 @@ suite('Select Queries', () => {
   });
 
   test('nested orderBy', async () => {
-    const client = await createPrismaClient<PrismaClient>({
+    const client = await createPrismaClient({
       account: [
         {
           id: 1,

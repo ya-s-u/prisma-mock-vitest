@@ -1,11 +1,10 @@
-import type { PrismaClient } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
 suite('Nested One-To-Many', () => {
   suite('Create', () => {
     test('create', async () => {
-      const client = await createPrismaClient<PrismaClient>({});
+      const client = await createPrismaClient({});
 
       const account = await client.account.create({
         data: {
@@ -41,7 +40,7 @@ suite('Nested One-To-Many', () => {
     });
 
     test('create (array)', async () => {
-      const client = await createPrismaClient<PrismaClient>({});
+      const client = await createPrismaClient({});
 
       const account = await client.account.create({
         data: {
@@ -87,7 +86,7 @@ suite('Nested One-To-Many', () => {
     });
 
     test('createMany', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         answers: [],
         userAnswers: [],
         user: [{ id: 1, role: 'USER' }],
@@ -124,7 +123,7 @@ suite('Nested One-To-Many', () => {
 
   suite('Update', () => {
     test('createMany', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         answers: [{ id: 1, title: 'Title' }],
         userAnswers: [],
         user: [{ id: 1, role: 'USER' }],
@@ -160,7 +159,7 @@ suite('Nested One-To-Many', () => {
     });
 
     test('updateMany', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1 }],
         stripe: [
           {
@@ -207,7 +206,7 @@ suite('Nested One-To-Many', () => {
     });
 
     test('update', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [{ id: 1 }],
         stripe: [
           {
@@ -255,7 +254,7 @@ suite('Nested One-To-Many', () => {
 
     suite('Delete', () => {
       test('deleteMany array', async () => {
-        const client = await createPrismaClient<PrismaClient>({
+        const client = await createPrismaClient({
           account: [{ id: 1, name: 'A' }],
           user: [
             {
@@ -297,7 +296,7 @@ suite('Nested One-To-Many', () => {
       });
 
       test('deleteMany object', async () => {
-        const client = await createPrismaClient<PrismaClient>({
+        const client = await createPrismaClient({
           account: [{ id: 1, name: 'A' }],
           user: [
             {
@@ -338,7 +337,7 @@ suite('Nested One-To-Many', () => {
       });
 
       test('delete array', async () => {
-        const client = await createPrismaClient<PrismaClient>({
+        const client = await createPrismaClient({
           account: [{ id: 1, name: 'A' }],
           user: [
             {
@@ -380,7 +379,7 @@ suite('Nested One-To-Many', () => {
       });
 
       test('delete object', async () => {
-        const client = await createPrismaClient<PrismaClient>({
+        const client = await createPrismaClient({
           account: [{ id: 1, name: 'A' }],
           user: [
             {
@@ -424,7 +423,7 @@ suite('Nested One-To-Many', () => {
 
   suite('Select', async () => {
     test('select', async () => {
-      const client = await createPrismaClient<PrismaClient>({
+      const client = await createPrismaClient({
         account: [
           { id: 1, name: 'A' },
           { id: 2, name: 'B' },
