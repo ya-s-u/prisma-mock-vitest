@@ -44,7 +44,7 @@ jobs:
         run: yarn ${{ matrix.script }}
 
   release:
-    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    if: github.event_name == 'release' && github.event.action == 'published'
     needs: [checks]
     runs-on: ubuntu-latest
     steps:
