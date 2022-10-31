@@ -1,251 +1,295 @@
-// @ts-nocheck
+import type { PrismaClient } from '@prisma/client';
+import { Role } from '@prisma/client';
+import { suite, test, expect } from 'vitest';
+import { createPrismaClient } from '../src';
 
-import createPrismaClient from '../src/'
-
-describe('PrismaClient', () => {
-
-  const data = {
+suite('PrismaClient', () => {
+  const baseData = {
     user: [
       {
         id: 1,
         name: 'sadfsdf',
         accountId: 1,
-        role: "ADMIN"
-      }
+        role: Role.ADMIN,
+      },
     ],
     account: [
       {
         id: 1,
         name: 'sadfsdf',
+        date: null,
       },
       {
         id: 2,
         name: 'adsfasdf2',
-      }
-    ]
-  }
+        date: null,
+      },
+    ],
+  };
 
   test('findOne', async () => {
-    const client = await createPrismaClient(data)
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     const user = await client.user.findUnique({
       where: {
-        id: 1
-      }
-    })
-    expect(user).toBe(data.user[0])
-  })
+        id: 1,
+      },
+    });
+
+    expect(user).toBe(baseData.user[0]);
+  });
 
   test('findOne by id', async () => {
-    const client = await createPrismaClient(data)
+    const client = await createPrismaClient<PrismaClient>(baseData);
     const user = await client.account.findUnique({
       where: {
-        id: 2
-      }
-    })
-    expect(user).toBe(data.account[1])
-  })
+        id: 2,
+      },
+    });
+    expect(user).toBe(baseData.account[1]);
+  });
 
   test('findMany', async () => {
-    const client = await createPrismaClient(data)
-    const accounts = await client.account.findMany()
-    expect(accounts).toEqual(data.account)
-  })
+    const client = await createPrismaClient<PrismaClient>(baseData);
+    const accounts = await client.account.findMany();
+    expect(accounts).toEqual(baseData.account);
+  });
 
   test('findFirst', async () => {
-    const client = await createPrismaClient(data)
-    const accounts = await client.account.findFirst()
-    expect(accounts).toEqual(data.account[0])
-  })
+    const client = await createPrismaClient<PrismaClient>(baseData);
+    const accounts = await client.account.findFirst();
+    expect(accounts).toEqual(baseData.account[0]);
+  });
 
   test('count', async () => {
-    const client = await createPrismaClient(data)
-    const accounts = await client.account.count()
-    expect(accounts).toEqual(2)
-  })
+    const client = await createPrismaClient<PrismaClient>(baseData);
+    const accounts = await client.account.count();
+    expect(accounts).toEqual(2);
+  });
 
   test('create', async () => {
-    const client = await createPrismaClient(data)
-    // TODO: Check output
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     await client.user.create({
       data: {
-        name: 'New user'
-      }
-    })
-    const users = await client.user.findMany()
+        name: 'New user',
+      },
+    });
+
+    const users = await client.user.findMany();
 
     expect(users).toEqual([
-      ...data.user,
+      ...baseData.user,
       {
         id: 2,
         name: 'New user',
-        role: "ADMIN",
+        role: 'ADMIN',
         deleted: false,
         clicks: null,
-        accountId: null
-      }
-    ])
-  })
+        accountId: null,
+      },
+    ]);
+  });
 
   test('create connect', async () => {
-    const client = await createPrismaClient(data)
-    // TODO: Check output
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
     await client.user.create({
       data: {
         name: 'New user',
-        account: { connect: { id: 1 } }
-      }
-    })
-    const users = await client.user.findMany()
+        account: { connect: { id: 1 } },
+      },
+    });
+
+    const users = await client.user.findMany();
 
     expect(users).toEqual([
-      ...data.user,
+      ...baseData.user,
       {
         id: 2,
         name: 'New user',
-        role: "ADMIN",
+        role: 'ADMIN',
         deleted: false,
         accountId: 1,
-        clicks: null
-      }
-    ])
-  })
+        clicks: null,
+      },
+    ]);
+  });
 
   test('delete', async () => {
-    const client = await createPrismaClient(data)
-    const user = await client.account.delete({
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
+    await client.account.delete({
       where: {
-        id: 2
-      }
-    })
-    const users = await client.account.findMany()
-    expect(users).toEqual([data.account[0]])
-  })
+        id: 2,
+      },
+    });
+
+    const users = await client.account.findMany();
+
+    expect(users).toEqual([baseData.account[0]]);
+  });
 
   test('update', async () => {
-    const client = await createPrismaClient(data)
-    const user = await client.account.update({
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
+    await client.account.update({
       where: {
-        id: 2
+        id: 2,
       },
       data: {
-        name: "New name"
-      }
-    })
-    const users = await client.account.findMany()
+        name: 'New name',
+      },
+    });
+
+    const users = await client.account.findMany();
+
     expect(users).toEqual([
-      data.account[0],
+      baseData.account[0],
       {
         id: 2,
-        name: "New name"
-      }
-    ])
-  })
+        name: 'New name',
+        date: null,
+      },
+    ]);
+  });
 
   test('upsert update', async () => {
-    const client = await createPrismaClient(data)
-    const user = await client.account.upsert({
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
+    // @ts-expect-error - We only want to test the update function of upsert.
+    await client.account.upsert({
       where: {
-        id: 2
+        id: 2,
       },
       update: {
-        name: "New name"
-      }
-    })
-    const users = await client.account.findMany()
+        name: 'New name',
+      },
+    });
+
+    const users = await client.account.findMany();
+
     expect(users).toEqual([
-      data.account[0],
+      baseData.account[0],
       {
         id: 2,
-        name: "New name"
-      }
-    ])
-  })
+        name: 'New name',
+        date: null,
+      },
+    ]);
+  });
 
-  test('upsert insert', async () => {
-    const client = await createPrismaClient(data)
-    const user = await client.account.upsert({
+  test('upsert create', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
+
+    await client.account.upsert({
       where: {
-        id: 3
+        id: 3,
       },
       create: {
         id: 3,
-        name: "New name"
-      }
-    })
-    const users = await client.account.findMany()
+        name: 'New name',
+      },
+      update: {},
+    });
+
+    const users = await client.account.findMany();
+
     expect(users).toEqual([
-      ...data.account,
+      ...baseData.account,
       {
         id: 3,
-        name: "New name"
-      }
-    ])
-  })
+        name: 'New name',
+        date: null,
+      },
+    ]);
+  });
 
   test('connect implicit', async () => {
-    const client = await createPrismaClient({})
+    const client = await createPrismaClient<PrismaClient>({});
+
     const account = await client.account.create({
       data: {
         id: 1,
         name: 'New account',
-      }
-    })
+      },
+    });
+
     const user = await client.user.create({
       data: {
         name: 'New user',
-        guestOf: { connect: { id: 1 } }
-      }
-    })
+        guestOf: { connect: { id: 1 } },
+      },
+    });
+
     const users = await client.user.findMany({
       include: {
-        guestOf: true
-      }
-    })
+        guestOf: true,
+      },
+    });
 
     expect(users).toEqual([
       {
         ...user,
-        guestOf: [ account ]
-      }
-    ])
-  })
+        guestOf: [account],
+      },
+    ]);
+  });
 
-  test("autoincoment", async () => {
-    const client = await createPrismaClient({})
+  test('autoincoment', async () => {
+    const client = await createPrismaClient<PrismaClient>({});
+
     const user = await client.user.create({
       data: {
         name: 'New user',
-      }
-    })
-    expect(user.id).toBe(1)
+      },
+    });
+
+    expect(user.id).toBe(1);
+
     await client.user.delete({
       where: {
-        id: user.id
-      }
-    })
+        id: user.id,
+      },
+    });
+
     const user2 = await client.user.create({
       data: {
         name: 'New user 2',
-      }
-    })
-    expect(user2.id).toBe(2)
-  })
+      },
+    });
 
-})
+    expect(user2.id).toBe(2);
+  });
 
-test("autoincoment: alternative id name", async () => {
-  const client = await createPrismaClient({})
-  const element = await client.element.create({
-    data: {
-      value: 'New user',
-    }
-  })
-  expect(element.e_id).toBe(1)
-  const element2 = await client.element.create({
-    data: {
-      name: 'New user 2',
-    }
-  })
-  expect(element2.e_id).toBe(2)
-})
+  test('autoincoment: alternative id name', async () => {
+    const client = await createPrismaClient<PrismaClient>({ user: baseData.user });
 
+    const element = await client.element.create({
+      data: {
+        value: 'New element',
+        user: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    });
+    expect(element.e_id).toBe(1);
+
+    const element2 = await client.element.create({
+      data: {
+        value: 'New element 2',
+        user: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    });
+    expect(element2.e_id).toBe(2);
+  });
+
+  // TODO: Connect or create
+  test.todo('connect or create');
+});

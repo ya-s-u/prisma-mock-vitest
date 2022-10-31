@@ -13,11 +13,12 @@ enum Role {
 }
 
 model Account {
-  id     Int     @id @default(autoincrement())
-  users  User[]  @relation("AccountUsers")
-  stripe Stripe? @relation
+  id     Int       @id @default(autoincrement())
+  users  User[]    @relation("AccountUsers")
+  stripe Stripe?
   name   String?
-  guest  User[]  @relation("AccountGuest")
+  guest  User[]    @relation("AccountGuest")
+  date   DateTime?
 }
 
 model User {
@@ -30,14 +31,15 @@ model User {
   guestOf   Account[]     @relation("AccountGuest")
   element   Element[]
   deleted   Boolean       @default(false)
+  name      String?
 }
 
 model Stripe {
-  id         Int     @id @default(autoincrement())
-  customerId String  @unique
-  accountId  Int     @unique
-  account    Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  active     Boolean @default(false)
+  id         Int      @id @default(autoincrement())
+  customerId String   @unique
+  accountId  Int?     @unique
+  account    Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  active     Boolean  @default(false)
 }
 
 model Answers {

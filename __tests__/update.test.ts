@@ -1,47 +1,45 @@
+import type { PrismaClient } from '@prisma/client';
+import { suite, test, expect } from 'vitest';
+import { createPrismaClient } from '../src';
 
-// @ts-nocheck
-
-import createPrismaClient from "../src";
-
-describe("PrismaMock update", () => {
-
-  const data = {
+suite('Update Queries', () => {
+  const baseData = {
     user: [
       { id: 1, name: 'Henk', clicks: 2 },
       { id: 2, name: 'Piet', clicks: 5 },
-    ]
-  }
+    ],
+  };
 
-  test("increment", async () => {
-    const client = await createPrismaClient(data);
+  test('increment', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           increment: 10,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(12);
-    expect(users[1].clicks).toEqual(15);
-  })
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(12);
+    expect(users[1]?.clicks).toEqual(15);
+  });
 
-  test("increment negative", async () => {
-    const client = await createPrismaClient(data);
+  test('increment negative', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           increment: -1,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(1);
-    expect(users[1].clicks).toEqual(4);
-  })
-  
-  test("increment where", async () => {
-    const client = await createPrismaClient(data);
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(1);
+    expect(users[1]?.clicks).toEqual(4);
+  });
+
+  test('increment where', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
@@ -49,68 +47,67 @@ describe("PrismaMock update", () => {
         },
       },
       where: {
-        id: 1
-      }
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(12);
-    expect(users[1].clicks).toEqual(5);
-  })
+        id: 1,
+      },
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(12);
+    expect(users[1]?.clicks).toEqual(5);
+  });
 
-  test("decrement", async () => {
-    const client = await createPrismaClient(data);
+  test('decrement', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           decrement: 1,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(1);
-    expect(users[1].clicks).toEqual(4);
-  })
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(1);
+    expect(users[1]?.clicks).toEqual(4);
+  });
 
-  test("multiply", async () => {
-    const client = await createPrismaClient(data);
+  test('multiply', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           multiply: 2,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(4);
-    expect(users[1].clicks).toEqual(10);
-  })
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(4);
+    expect(users[1]?.clicks).toEqual(10);
+  });
 
-  test("divide", async () => {
-    const client = await createPrismaClient(data);
+  test('divide', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           divide: 2,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(1);
-    expect(users[1].clicks).toEqual(2.5);
-  })
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(1);
+    expect(users[1]?.clicks).toEqual(2.5);
+  });
 
-  test("set", async () => {
-    const client = await createPrismaClient(data);
+  test('set', async () => {
+    const client = await createPrismaClient<PrismaClient>(baseData);
     await client.user.updateMany({
       data: {
         clicks: {
           set: 2,
         },
       },
-    })
-    const users = await client.user.findMany()
-    expect(users[0].clicks).toEqual(2);
-    expect(users[1].clicks).toEqual(2);
-  })
-
-})
+    });
+    const users = await client.user.findMany();
+    expect(users[0]?.clicks).toEqual(2);
+    expect(users[1]?.clicks).toEqual(2);
+  });
+});

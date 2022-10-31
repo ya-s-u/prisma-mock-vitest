@@ -1,24 +1,22 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "composite": false,
     "declaration": true,
-    "outDir": "lib/",
-    "lib": [
-      "es2017"
-    ],
-    "strict": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "alwaysStrict": true,
-    "types": [
-      "jest"
-    ],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "declarationMap": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "preserveWatchOutput": true,
+
+    "lib": ["ES6"],
+    "module": "ESNext",
+    "target": "ES6",
+
+    "exactOptionalPropertyTypes": false
   },
-  "include": ["src"],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
