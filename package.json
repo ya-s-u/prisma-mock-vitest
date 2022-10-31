@@ -32,8 +32,7 @@
     "tsc": "tsc --noEmit",
     "tsc:watch": "tsc --watch",
     "clean": "rimraf node_modules && rimraf dist",
-    "prisma:generate": "npx prisma generate",
-    "postinstall": "husky install && npx prisma generate"
+    "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.5.0",
