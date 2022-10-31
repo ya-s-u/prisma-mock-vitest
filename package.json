@@ -2,7 +2,7 @@
   "name": "prisma-mock-vitest",
   "version": "0.1.0",
   "description": "Mock prisma client for unit testing with vitest",
-  "repository": "https://github.com/james-elicx/prisma-mock",
+  "repository": "https://github.com/james-elicx/prisma-mock-vitest",
   "author": "James",
   "license": "MIT",
   "files": [
@@ -18,11 +18,11 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/james-elicx/prisma-mock/issues"
+    "url": "https://github.com/james-elicx/prisma-mock-vitest/issues"
   },
-  "homepage": "https://github.com/james-elicx/prisma-mock#readme",
+  "homepage": "https://github.com/james-elicx/prisma-mock-vitest#readme",
   "scripts": {
-    "build": "rimraf dist && yarn lint && yarn test && vite build",
+    "build": "rimraf dist && vite build",
     "build:skip": "rimraf dist && vite build",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
@@ -32,6 +32,7 @@
     "tsc": "tsc --noEmit",
     "tsc:watch": "tsc --watch",
     "clean": "rimraf node_modules && rimraf dist",
+    "prisma:generate": "npx prisma generate",
     "postinstall": "husky install && npx prisma generate"
   },
   "dependencies": {

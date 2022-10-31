@@ -1,90 +1,113 @@
+# Prisma Mock - Vitest
 
-# Prisma Mock
+[![npm version](https://badge.fury.io/js/prisma-mock-vitest.svg)](http://badge.fury.io/js/prisma-mock-vitest)
 
-This is a mock of the Prisma API intended for unit testing. All the data is stored in memory.
+This is a mock of the Prisma API, intended for unit testing with [Vitest](https://vitest.dev). All the data is stored in memory.
 
-The library `jest-mock-extended` is used, which means that if functionality you need is not implemented yet, you can mock it yourself.
+This library uses [vitest-mock-extended](https://github.com/eratio08/vitest-mock-extended), so if functionality you need is not implemented yet, you can mock it yourself.
 
-# Usage
+Pull requests are welcome for missing features.
+
+## Installation
+
+```bash
+yarn add -D prisma-mock-vitest
+```
+
+```bash
+npm install prisma-mock-vitest --save-dev
+```
+
+You should also have run `npx prisma generate` for your Prisma schema.
+
+## Usage
 
 Simple example how to create a prisma mock instance:
 
-```js
-import createPrismaMock from "prisma-mock"
+```ts
+import { createPrismaMock } from 'prisma-mock-vitest';
+import { beforeEach, expect, test } from 'vitest';
 
-let client
+let client: PrismaClient;
 
 beforeEach(async () => {
-  client = await createPrismaMock()
-}
+  client = await createPrismaMock();
+});
+
+test('Initial user count is 0', async () => {
+  const totalUsers = await client.user.count();
+  expect(totalUsers).toEqual(0);
+});
 ```
 
-
-An example how to mock a global prisma instance inside and schema a "db" directory (like blitzjs):
-
-```js
-import createPrismaMock from "prisma-mock"
-import { mockDeep, mockReset } from "jest-mock-extended"
-
-jest.mock("db", () => ({
-  __esModule: true,
-  ...jest.requireActual('db'),
-  default: mockDeep()
-}))
-
-import db, { Prisma } from "db"
-
-beforeEach(() => {
-  mockReset(db)
-  return createPrismaMock({}, Prisma.dmmf.datamodel, db)
-})
-```
-
-
-# API
+An example how to mock a global prisma instance inside and schema a 'db' directory (like blitzjs):
 
 ```ts
-createPrismaMock(
-  data: PrismaMockData<P> = {},
-  datamodel?: Prisma.DMMF.Datamodel,
-  client = mockDeep<P>()
-): Promise<P>
+import type { PrismaClient } from '@prisma/client';
+import { createPrismaMock } from 'prisma-mock-vitest';
+import { beforeEach } from 'vitest';
+import { mockDeep, mockReset } from 'vitest-mock-extended';
+
+vi.mock('db', () => ({
+  __esModule: true,
+  ...jest.requireActual('db'),
+  default: mockDeep<PrismaClient>(),
+}));
+
+import db, { Prisma } from 'db';
+
+beforeEach(() => {
+  mockReset(db);
+  return createPrismaMock({}, Prisma.dmmf.datamodel, db);
+});
 ```
 
-## data
+## API
 
-Object with an array per table of default data (using `create` is preferred). Example:
+```ts
+createPrismaMock<P extends PrismaClient = PrismaClient>(
+  data: PrismaMockData<P> = {},
+  datamodel?: Prisma.DMMF.Datamodel,
+  client = mockDeep<P>(),
+): Promise<P>;
+```
 
-```js
+### data
+
+Object with an array default data for each table/model.
+
+```ts
 createPrismaMock({
   users: [
     {
       id: 1,
-      name: "John Doe",
-      accountId: 1
-    }
+      name: 'John Doe',
+      accountId: 1,
+    },
   ],
   account: [
     {
       id: 1,
-      name: "Company",
-    }
-  ]
-})
+      name: 'Company',
+    },
+  ],
+});
 ```
 
+### datamodel
 
-## datamodel
-The datamodel of the prisma client, value of `Prisma.dmmf.datamodel`.
+The datamodel of the prisma client, i.e. `Prisma.dmmf.datamodel`.
 
-## client
-`jest-mock-extended` instance used. If not provided, a new instance is created.
+### client
 
+`vitest-mock-extended` instance. If it's not provided, a new instance is created.
 
-# Supported features
-Alot of the functionality is implemented, but parts are missing. Here is a list of the (missing) features:
+## Supported Features
 
-## Model queries
+A lot of the functionality is implemented, but parts are missing. Here is a list of the (missing) features.
+
+### Model Queries
+
 - findUnique,
 - findMany,
 - findFirst,
@@ -99,16 +122,17 @@ Alot of the functionality is implemented, but parts are missing. Here is a list 
 - TODO: aggregate
 - TODO: groupBy
 
+### Model Query Options
 
-## Model query options
 - distinct
 - include
 - where
 - select
 - orderBy
-- TODO: select: _count
+- TODO: select: \_count
 
-## Nested queries
+### Nested Queries
+
 - create
 - createMany
 - update
@@ -116,13 +140,13 @@ Alot of the functionality is implemented, but parts are missing. Here is a list 
 - delete
 - deleteMany
 - connect
+- connectOrCreate
 - disconnect
 - TODO: set
-- TODO: connectOrCreate
 - TODO: upsert
 
+### Filter Conditions and Operators
 
-## Filter conditions and operators
 - equals
 - gt
 - gte
@@ -140,29 +164,35 @@ Alot of the functionality is implemented, but parts are missing. Here is a list 
 - TODO: search
 - TODO: mode
 
-## Relation filters
+### Relation Filters
+
 - some
 - every
 - none
 - TODO: is
 
-## Scalar list methods
+### Scalar List Methods
+
 TODO (set, push)
 
-## Scalar list filters
+### Scalar List Filters
+
 TODO (has, hasEvery, hasSome, isEmpty, equals)
 
-## Atomic number operations
+### Atomic Number Operations
+
 - increment
 - decrement
 - multiply
 - divide
 - set
 
-## JSON filters
+### JSON Filters
+
 TODO (path, string_contains, string_starts_with, string_ends_with, array_contains, array_starts_with, array_ends_with)
 
-## Attributes
+### Attributes
+
 - @@id
 - @default
 - @unique (TODO: no error if duplicate)
@@ -170,16 +200,17 @@ TODO (path, string_contains, string_starts_with, string_ends_with, array_contain
 - @relation
 - TODO: @updatedAt
 
-## Attribute functions
+### Attribute functions
+
 - autoincrement()
+- cuid()
+- uuid()
+- now()
 - TODO: auto()
-- TODO: cuid()
-- TODO: uuid()
-- TODO: now()
 - TODO: dbgenerated()
 
-## Referential actions
+### Referential actions
+
 - onDelete (SetNull, Cascade)
 - TODO: onDelete: Restrict, NoAction, SetDefault
 - TODO: onUpdate
-
