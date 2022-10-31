@@ -196,6 +196,31 @@ const createPrismaMock = <P extends PrismaClient>(
               }
             }
 
+            if (c.connectOrCreate) {
+              const { [field.name]: connectOrCreate, ...rest } = d;
+
+              const name = getCamelCase(field.type);
+              const delegate = Delegate(name, model);
+
+              const item = delegate.findUnique(connectOrCreate.connectOrCreate.where);
+
+              if (item) {
+                d = {
+                  ...rest,
+                  [field.relationFromFields[0]]: item[field.relationToFields[0]],
+                };
+              } else {
+                const newItem = delegate.create({
+                  data: connectOrCreate.connectOrCreate.create,
+                });
+
+                d = {
+                  ...rest,
+                  [field.relationFromFields[0]]: newItem[field.relationToFields[0]],
+                };
+              }
+            }
+
             const name = getCamelCase(field.type);
             const delegate = Delegate(name, model);
             if (c.updateMany) {
@@ -739,4 +764,5 @@ const createPrismaMock = <P extends PrismaClient>(
 };
 
 export default createPrismaMock;
+
 export { createPrismaMock, createPrismaMock as createPrismaClient };

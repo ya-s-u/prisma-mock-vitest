@@ -36,7 +36,7 @@ suite('PrismaClient', () => {
       },
     });
 
-    expect(user).toBe(baseData.user[0]);
+    expect(user).toEqual(baseData.user[0]);
   });
 
   test('findOne by id', async () => {
@@ -46,7 +46,7 @@ suite('PrismaClient', () => {
         id: 2,
       },
     });
-    expect(user).toBe(baseData.account[1]);
+    expect(user).toEqual(baseData.account[1]);
   });
 
   test('findMany', async () => {
@@ -245,7 +245,7 @@ suite('PrismaClient', () => {
       },
     });
 
-    expect(user.id).toBe(1);
+    expect(user.id).toEqual(1);
 
     await client.user.delete({
       where: {
@@ -259,7 +259,7 @@ suite('PrismaClient', () => {
       },
     });
 
-    expect(user2.id).toBe(2);
+    expect(user2.id).toEqual(2);
   });
 
   test('autoincoment: alternative id name', async () => {
@@ -275,7 +275,7 @@ suite('PrismaClient', () => {
         },
       },
     });
-    expect(element.e_id).toBe(1);
+    expect(element.e_id).toEqual(1);
 
     const element2 = await client.element.create({
       data: {
@@ -287,9 +287,178 @@ suite('PrismaClient', () => {
         },
       },
     });
-    expect(element2.e_id).toBe(2);
+    expect(element2.e_id).toEqual(2);
   });
 
-  // TODO: Connect or create
-  test.todo('connect or create');
+  suite('Connect or Create', () => {
+    test('Connect to already existing user', async () => {
+      const client = await createPrismaClient<PrismaClient>({
+        user: [
+          {
+            id: 1,
+            name: 'Old user',
+          },
+        ],
+      });
+
+      await expect(client.element.count()).resolves.toEqual(0);
+      await expect(client.user.count()).resolves.toEqual(1);
+
+      const element = await client.element.create({
+        data: {
+          value: 'New element',
+          user: {
+            connectOrCreate: {
+              where: {
+                id: 1,
+              },
+              create: {
+                name: 'New user',
+              },
+            },
+          },
+        },
+        select: {
+          e_id: true,
+          userId: true,
+          value: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      expect(element.e_id).toEqual(1);
+      expect(element.value).toEqual('New element');
+
+      expect(element.userId).toEqual(1);
+      expect(element.user.id).toEqual(1);
+      expect(element.user.name).toEqual('Old user');
+
+      await expect(client.element.count()).resolves.toEqual(1);
+      await expect(client.user.count()).resolves.toEqual(1);
+    });
+
+    test('Create a new user when no user exists', async () => {
+      const client = await createPrismaClient<PrismaClient>();
+
+      const element = await client.element.create({
+        data: {
+          value: 'New element',
+          user: {
+            connectOrCreate: {
+              where: {
+                id: 1,
+              },
+              create: {
+                name: 'New user',
+              },
+            },
+          },
+        },
+        select: {
+          e_id: true,
+          userId: true,
+          value: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      expect(element.e_id).toEqual(1);
+      expect(element.value).toEqual('New element');
+
+      expect(element.userId).toEqual(1);
+      expect(element.user.id).toEqual(1);
+      expect(element.user.name).toEqual('New user');
+
+      await expect(client.element.count()).resolves.toEqual(1);
+      await expect(client.user.count()).resolves.toEqual(1);
+    });
+
+    test('Create a new user when no user exists and connect multiple times', async () => {
+      const client = await createPrismaClient<PrismaClient>();
+
+      const element = await client.element.create({
+        data: {
+          value: 'New element',
+          user: {
+            connectOrCreate: {
+              where: {
+                id: 1,
+              },
+              create: {
+                name: 'New user',
+              },
+            },
+          },
+        },
+        select: {
+          e_id: true,
+          userId: true,
+          value: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      expect(element.e_id).toEqual(1);
+      expect(element.value).toEqual('New element');
+
+      expect(element.userId).toEqual(1);
+      expect(element.user.id).toEqual(1);
+      expect(element.user.name).toEqual('New user');
+
+      await expect(client.element.count()).resolves.toEqual(1);
+      await expect(client.user.count()).resolves.toEqual(1);
+
+      const altElement = await client.element.create({
+        data: {
+          value: 'Alt element',
+          user: {
+            connectOrCreate: {
+              where: {
+                id: element.userId,
+              },
+              create: {
+                name: 'Alt user',
+              },
+            },
+          },
+        },
+        select: {
+          e_id: true,
+          userId: true,
+          value: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      expect(altElement.e_id).toEqual(2);
+      expect(altElement.value).toEqual('Alt element');
+
+      expect(altElement.userId).toEqual(element.userId);
+      expect(altElement.user.id).toEqual(element.userId);
+      expect(altElement.user.name).toEqual(element.user.name);
+
+      await expect(client.element.count()).resolves.toEqual(2);
+      await expect(client.user.count()).resolves.toEqual(1);
+    });
+  });
 });
