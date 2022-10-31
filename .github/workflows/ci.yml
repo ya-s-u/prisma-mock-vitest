@@ -18,7 +18,7 @@ on:
       - 'yarn.lock'
       - '.github/workflows/ci.yml'
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   checks:
