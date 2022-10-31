@@ -1,7 +1,7 @@
 import { suite, test, expect } from 'vitest';
-import { createPrismaClient } from '../src';
+import { createPrismaClient } from '../../src';
 
-suite('Queries with Distinct', () => {
+suite('Model Queries > Distinct', () => {
   const baseData = {
     user: [
       {

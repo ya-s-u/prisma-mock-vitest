@@ -1,7 +1,7 @@
 import { suite, test, expect } from 'vitest';
-import { createPrismaClient } from '../src';
+import { createPrismaClient } from '../../src';
 
-suite('Queries with Include', () => {
+suite('Model Queries > Include', () => {
   const baseData = {
     user: [
       {

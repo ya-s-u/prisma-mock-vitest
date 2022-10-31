@@ -1,7 +1,7 @@
 import { suite, test, expect } from 'vitest';
-import { createPrismaClient } from '../src';
+import { createPrismaClient } from '../../src';
 
-suite('Update Queries', () => {
+suite('Model Queries > Update', () => {
   const baseData = {
     user: [
       { id: 1, name: 'Henk', clicks: 2 },

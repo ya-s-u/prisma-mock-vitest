@@ -37,12 +37,15 @@
   "dependencies": {
     "@prisma/client": "^4.5.0",
     "@prisma/generator-helper": "^4.5.0",
-    "@prisma/sdk": "^4.0.0"
+    "@prisma/sdk": "^4.0.0",
+    "cuid": "^2.1.8",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
     "@tsconfig/strictest": "^1.0.2",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "eslint": "^8.26.0",

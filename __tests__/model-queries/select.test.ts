@@ -1,7 +1,7 @@
 import { suite, test, expect } from 'vitest';
-import { createPrismaClient } from '../src';
+import { createPrismaClient } from '../../src';
 
-suite('Select Queries', () => {
+suite('Model Queries > Select', () => {
   const baseData = {
     user: [
       {

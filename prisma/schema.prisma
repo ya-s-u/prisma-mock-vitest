@@ -32,6 +32,8 @@ model User {
   element   Element[]
   deleted   Boolean       @default(false)
   name      String?
+  posts     Post[]
+  comments  Comment[]
 }
 
 model Stripe {
@@ -69,4 +71,24 @@ model Element {
   value String
 
   @@unique([userId, value])
+}
+
+model Post {
+  id String @id @default(cuid())
+
+  title String
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+
+  message String
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
 }

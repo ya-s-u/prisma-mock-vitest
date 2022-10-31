@@ -1,12 +1,12 @@
 import { Role } from '@prisma/client';
 import { suite, test, expect } from 'vitest';
-import { createPrismaClient } from '../src';
+import { createPrismaClient } from '../../src';
 
 // TODO:
 // Pagination
 // OrderBy
 
-suite('Queries with Where', () => {
+suite('Model Queries > Where', () => {
   suite('Basic', () => {
     const date1 = new Date(2020, 1, 1);
     const date2 = new Date(2020, 1, 2);

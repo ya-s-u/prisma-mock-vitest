@@ -3,6 +3,8 @@
 
 import type { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
+import cuid from 'cuid';
+import { v4 as uuidv4 } from 'uuid';
 import { mockDeep } from 'vitest-mock-extended';
 
 type UnwrapPromise<P> = P extends Promise<infer R> ? R : P;
@@ -337,6 +339,24 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
                 autoincrement = {
                   ...autoincrement,
                   [key]: m,
+                };
+              }
+              if (field.default.name === 'cuid') {
+                d = {
+                  ...d,
+                  [field.name]: cuid(),
+                };
+              }
+              if (field.default.name === 'uuid') {
+                d = {
+                  ...d,
+                  [field.name]: uuidv4(),
+                };
+              }
+              if (field.default.name === 'now') {
+                d = {
+                  ...d,
+                  [field.name]: new Date(),
                 };
               }
             } else {
