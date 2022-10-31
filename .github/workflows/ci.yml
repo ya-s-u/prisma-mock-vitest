@@ -17,6 +17,8 @@ on:
       - '**.cjs'
       - 'yarn.lock'
       - '.github/workflows/ci.yml'
+  release:
+    types: [created]
 
 jobs:
   checks:
@@ -40,3 +42,28 @@ jobs:
 
       - name: ${{ matrix.script }}
         run: yarn ${{ matrix.script }}
+
+  release:
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    needs: [checks]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish to NPM
+        run: yarn npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
