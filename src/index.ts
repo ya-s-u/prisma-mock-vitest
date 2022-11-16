@@ -550,7 +550,9 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
       if (args?.select) {
         return res.map((item) => {
           const newItem = {};
-          Object.keys(args.select).forEach((key) => (newItem[key] = item[key]));
+          Object.keys(args.select)
+            .filter((key) => !!args.select[key])
+            .forEach((key) => (newItem[key] = item[key]));
           return newItem;
         });
       }
@@ -646,7 +648,7 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
       if ((!args?.include && !args?.select) || !item) return item;
       let newItem = item;
       const obj = args?.select || args?.include;
-      const keys = Object.keys(obj);
+      const keys = Object.keys(obj).filter((key) => !!obj[key]);
 
       keys.forEach((key) => {
         // Get field schema for relation info
