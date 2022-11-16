@@ -524,16 +524,17 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
       if (items.length === 0) {
         return null;
       }
-      return items[0];
-    };
-    const findMany = (args) => {
-      const res = data[prop].filter(matchFnc(args?.where)).map(includes(args));
+      return items[0]
+    }
+
+    const findMany = args => {
+      let res = data[prop].filter(matchFnc(args?.where)).map(includes(args))
       if (args?.distinct) {
-        const values = {};
-        return res.filter((item) => {
-          let shouldInclude = true;
-          args.distinct.forEach((key) => {
-            const vals = values[key] || [];
+        let values = {}
+        res = res.filter(item => {
+          let shouldInclude = true
+          args.distinct.forEach(key => {
+            const vals = values[key] || []
             if (vals.includes(item[key])) {
               shouldInclude = false;
             } else {
@@ -548,16 +549,19 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
         res.sort(sortFunc(args?.orderBy));
       }
       if (args?.select) {
-        return res.map((item) => {
-          const newItem = {};
-          Object.keys(args.select)
-            .filter((key) => !!args.select[key])
-            .forEach((key) => (newItem[key] = item[key]));
-          return newItem;
-        });
+        res = res.map(item => {
+          const newItem = {}
+          Object.keys(args.select).forEach(key => (newItem[key] = item[key]))
+          return newItem
+        })
       }
-      return res;
-    };
+      if (args?.skip !== undefined || args?.take !== undefined) {
+        const start = args?.skip !== undefined ? args?.skip : 0
+        const end = args?.take !== undefined ? start + args.take : undefined
+        res = res.slice(start, end)
+      }
+      return res
+    }
 
     const updateMany = (args) => {
       // if (!Array.isArray(data[prop])) {
