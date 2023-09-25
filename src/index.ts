@@ -3,7 +3,6 @@
 
 import type { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import cuid from 'cuid';
 import { v4 as uuidv4 } from 'uuid';
 import { mockDeep } from 'vitest-mock-extended';
 
@@ -344,7 +343,7 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
               if (field.default.name === 'cuid') {
                 d = {
                   ...d,
-                  [field.name]: cuid(),
+                  [field.name]: uuidv4(),
                 };
               }
               if (field.default.name === 'uuid') {
