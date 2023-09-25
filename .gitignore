@@ -14,7 +14,7 @@ node_modules
 coverage
 
 # build files
-dist
+# dist
 
 # temp files
 tsconfig.tsbuildinfo
