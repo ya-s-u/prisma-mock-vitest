@@ -1,6 +1,6 @@
 {
   "name": "prisma-mock-vitest",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Mock prisma client for unit testing with vitest",
   "repository": "https://github.com/james-elicx/prisma-mock-vitest",
   "author": "James",
@@ -37,8 +37,7 @@
   "dependencies": {
     "@prisma/client": "^4.5.0",
     "@prisma/generator-helper": "^4.5.0",
-    "@prisma/sdk": "^4.0.0",
-    "uuid": "^9.0.0"
+    "@prisma/sdk": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",

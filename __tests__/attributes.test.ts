@@ -1,5 +1,4 @@
 import { Role } from '@prisma/client';
-import { validate } from 'uuid';
 import { suite, test, expect } from 'vitest';
 import { createPrismaClient } from '../src';
 
@@ -98,23 +97,6 @@ suite('Attributes', () => {
 
       expect(post.id.length).toEqual(25);
       expect(post.id.startsWith('c')).toEqual(true);
-    });
-
-    test('uuid', async () => {
-      const client = await createPrismaClient({ user: baseData.user });
-
-      const comment = await client.comment.create({
-        data: {
-          message: 'New comment',
-          author: {
-            connect: {
-              id: 1,
-            },
-          },
-        },
-      });
-
-      expect(validate(comment.id)).toEqual(true);
     });
 
     test('now', async () => {
