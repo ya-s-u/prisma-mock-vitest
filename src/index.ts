@@ -342,13 +342,13 @@ const createPrismaMock = <P extends PrismaClient = PrismaClient>(
               if (field.default.name === 'cuid') {
                 d = {
                   ...d,
-                  [field.name]: new Date(),
+                  [field.name]: Date.now().toString(),
                 };
               }
               if (field.default.name === 'uuid') {
                 d = {
                   ...d,
-                  [field.name]: new Date(),
+                  [field.name]: Date.now().toString(),
                 };
               }
               if (field.default.name === 'now') {

@@ -9160,10 +9160,10 @@ const Ji = (e, t) => {
               }
               I.default.name === "cuid" && (y = {
                 ...y,
-                [I.name]: new Date()
+                [I.name]: Date.now().toString()
               }), I.default.name === "uuid" && (y = {
                 ...y,
-                [I.name]: new Date()
+                [I.name]: Date.now().toString()
               }), I.default.name === "now" && (y = {
                 ...y,
                 [I.name]: new Date()
